@@ -185,7 +185,7 @@
 	broken-cd;
 	bus-width = <4>;
 	cap-sd-highspeed;
-	max-frequency = <10000000>;
+	max-frequency = <50000000>;
 	status = "okay";
 };
 
