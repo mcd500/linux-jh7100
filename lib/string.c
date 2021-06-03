@@ -878,7 +878,7 @@ EXPORT_SYMBOL(memset64);
  * You should not use this function to access IO space, use memcpy_toio()
  * or memcpy_fromio() instead.
  */
-#ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+#if 0
 void *memcpy(void *dest, const void *src, size_t count)
 {
 	char *tmp = dest;
@@ -899,7 +899,6 @@ void *memcpy(void *dest, const void *src, size_t count)
 	long src_p = (long)src_l;
 	long bytes_per_long = BITS_PER_LONG / 8;
 	long mask = bytes_per_long - 1;
-//	long mask = ~(long)0xFFFFFFFFFFFFFFF8;
 
 	/* Copy up to 64 bits at a time, if aligned. */
 	if (!(tmp_p & mask) && !(src_p & mask)) {
@@ -908,6 +907,7 @@ void *memcpy(void *dest, const void *src, size_t count)
 			*tmp_l++ = *src_l++;
 			count -= bytes_per_long;
 		}
+		tmp = (char *)tmp_l, s = (char *)src_l;
 	}
 
 	/* Copy whatever bytes remain. */
