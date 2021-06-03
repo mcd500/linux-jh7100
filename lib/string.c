@@ -893,18 +893,19 @@ void *memcpy(void *dest, const void *src, size_t count)
 {
 	char *tmp = dest;
 	const char *s = src;
-	int bytes_per_long = BITS_PER_LONG / 8;
-	int mask = bytes_per_long - 1;
+	long *tmp_l = (long *)dest;
+	const long*src_l = (const long*)src;
+	long tmp_p = (long)tmp_l;
+	long src_p = (long)src_l;
+	long bytes_per_long = BITS_PER_LONG / 8;
+	long mask = bytes_per_long - 1;
+//	long mask = ~(long)0xFFFFFFFFFFFFFFF8;
 
 	/* Copy up to 64 bits at a time, if aligned. */
-	if (!((long)tmp & mask) && !((long)src & mask)) {
+	if (!(tmp_p & mask) && !(src_p & mask)) {
 		while (count > bytes_per_long) {
-			long *tmp_l = (long *)tmp;
-			const long *src_l = src;
 
-			*tmp_l = *src_l;
-			tmp += bytes_per_long;
-			src += bytes_per_long;
+			*tmp_l++ = *src_l++;
 			count -= bytes_per_long;
 		}
 	}
